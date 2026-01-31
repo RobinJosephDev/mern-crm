@@ -60,18 +60,20 @@ exports.getLeadById = async (req, res) => {
 };
 
 // UPDATE LEAD
+// UPDATE LEAD
 exports.updateLead = async (req, res) => {
   try {
-    const lead = await Lead.findById(req.params.id);
+    const updatedLead = await Lead.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    })
+      .populate("assignedTo", "name email")
+      .populate("createdBy", "name email");
 
-    if (!lead) {
+    if (!updatedLead) {
       return res.status(404).json({ message: "Lead not found" });
     }
 
-    Object.assign(lead, req.body);
-    await lead.save();
-
-    res.json(lead);
+    res.json(updatedLead);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
