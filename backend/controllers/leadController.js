@@ -29,9 +29,17 @@ exports.createLead = async (req, res) => {
 };
 
 // GET ALL LEADS
+// GET ALL LEADS (role-based)
 exports.getLeads = async (req, res) => {
   try {
-    const leads = await Lead.find()
+    let filter = {};
+
+    // If logged-in user is EMPLOYEE → only their assigned leads
+    if (req.user.role === "employee") {
+      filter.assignedTo = req.user.id;
+    }
+
+    const leads = await Lead.find(filter)
       .populate("assignedTo", "name email")
       .populate("createdBy", "name email")
       .sort({ createdAt: -1 });
