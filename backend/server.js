@@ -24,9 +24,9 @@ app.post("/api/auth/register", (req, res) => {
   res.send("DIRECT register works");
 });
 
-app.use("/api/leads", require("./routes/leadRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
-
+app.use("/api/leads", require("./routes/leadRoutes"));
+app.use("/api/follow-ups", require("./routes/followUpRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

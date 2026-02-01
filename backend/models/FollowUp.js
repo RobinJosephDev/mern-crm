@@ -1,31 +1,18 @@
 const mongoose = require("mongoose");
 
+const productSchema = new mongoose.Schema({
+  productName: String,
+  quantity: String,
+});
+
 const contactSchema = new mongoose.Schema({
   contactName: String,
   contactNo: String,
   email: String,
 });
 
-const leadSchema = new mongoose.Schema(
+const FollowUpSchema = new mongoose.Schema(
   {
-    // Lead Info
-    leadNumber: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    leadDate: {
-      type: Date,
-      required: true,
-    },
-    followUpDate: {
-      type: Date,
-      required: true,
-    },
-    leadType: {
-      type: String,
-      required: true,
-    },
     leadStatus: {
       type: String,
       enum: [
@@ -44,6 +31,37 @@ const leadSchema = new mongoose.Schema(
       ],
       default: "Prospect customer",
     },
+    followUpDate: {
+      type: Date,
+      required: true,
+    },
+
+    followUpType: {
+      type: String,
+      enum: ["Email", "Call Customer"],
+      default: "Email",
+    },
+    remarks: {
+      type: String,
+      required: true,
+    },
+    equipmentType: {
+      type: String,
+      enum: ["Van", "Reefer", "Flatbed", "Triaxle", "Maxi", "Btrain", "Roll tite"],
+      default: "Van",
+    },
+    // Products
+    products: [productSchema],
+    // Lead Info
+    leadNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    leadDate: {
+      type: Date,
+      required: true,
+    },
 
     // Customer Details
     customerName: String,
@@ -55,8 +73,10 @@ const leadSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    website: String,
-    equipmentType: String,
+    leadType: {
+      type: String,
+      required: true,
+    },
 
     // Address
     address: {
@@ -68,10 +88,10 @@ const leadSchema = new mongoose.Schema(
       unitNo: String,
     },
 
+    notes: String,
+
     // Contacts
     contacts: [contactSchema],
-
-    notes: String,
 
     // System fields
     assignedTo: {
@@ -84,7 +104,8 @@ const leadSchema = new mongoose.Schema(
       ref: "User",
     },
   },
+
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Lead", leadSchema);
+module.exports = mongoose.model("FollowUp", FollowUpSchema);
