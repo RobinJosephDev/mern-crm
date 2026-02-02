@@ -83,6 +83,14 @@ const leadSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    isConverted: {
+      type: Boolean,
+      default: false,
+    },
+    convertedCustomer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+    },
   },
   { timestamps: true },
 );

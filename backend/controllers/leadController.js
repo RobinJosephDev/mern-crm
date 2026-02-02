@@ -1,4 +1,5 @@
 const Lead = require("../models/Lead");
+const Customer = require("../models/Customer");
 
 // CREATE LEAD
 exports.createLead = async (req, res) => {
@@ -50,12 +51,67 @@ exports.getLeads = async (req, res) => {
 //Leads with Quotes
 exports.getLeadsWithQuotes = async (req, res) => {
   try {
-    const leads = await Lead.find({ leadStatus: "Quotations" }).sort({ createdAt: -1 });
+    const leads = await Lead.find({ leadStatus: "Quotations" })
+      .populate("assignedTo", "name email")
+      .populate("createdBy", "name email")
+      .sort({ createdAt: -1 });
 
     res.status(200).json(leads);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// CONVERT LEAD TO CUSTOMER
+exports.convertLeadToCustomer = async (req, res) => {
+  try {
+    const lead = await Lead.findById(req.params.id);
+
+    if (!lead) {
+      return res.status(404).json({ message: "Lead not found" });
+    }
+
+    if (lead.isConverted) {
+      return res.status(400).json({ message: "Lead already converted" });
+    }
+
+    // Generate a unique customerRefNo
+    const customerRefNo = `CUST-${Date.now()}`;
+
+    // CREATE CUSTOMER FROM LEAD
+    const customer = await Customer.create({
+      customerType: "Regular",
+      customerName: lead.customerName,
+      email: lead.email,
+      contactNo: lead.phone,
+      website: lead.website,
+      customerRefNo, // <-- important!
+
+      primaryAddress: {
+        street: lead.address?.addressLine,
+        city: lead.address?.city,
+        state: lead.address?.state,
+        country: lead.address?.country,
+        postalCode: lead.address?.postalCode,
+        unitNo: lead.address?.unitNo,
+      },
+
+      contacts: lead.contacts || [],
+      convertedFromLead: lead._id,
+      createdBy: req.user.id,
+    });
+
+    // MARK LEAD AS CONVERTED
+    lead.isConverted = true;
+    lead.convertedCustomer = customer._id;
+    lead.leadStatus = "Quotations"; // ✅ Must be valid enum, don't set "Converted"
+    await lead.save();
+
+    res.status(201).json(customer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
   }
 };
 
