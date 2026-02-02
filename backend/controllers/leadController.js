@@ -39,10 +39,7 @@ exports.getLeads = async (req, res) => {
       filter.assignedTo = req.user.id;
     }
 
-    const leads = await Lead.find(filter)
-      .populate("assignedTo", "name email")
-      .populate("createdBy", "name email")
-      .sort({ createdAt: -1 });
+    const leads = await Lead.find(filter).populate("assignedTo", "name email").populate("createdBy", "name email").sort({ createdAt: -1 });
 
     res.json(leads);
   } catch (error) {
@@ -50,12 +47,22 @@ exports.getLeads = async (req, res) => {
   }
 };
 
+//Leads with Quotes
+exports.getLeadsWithQuotes = async (req, res) => {
+  try {
+    const leads = await Lead.find({ leadStatus: "Quotations" }).sort({ createdAt: -1 });
+
+    res.status(200).json(leads);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // GET SINGLE LEAD BY ID
 exports.getLeadById = async (req, res) => {
   try {
-    const lead = await Lead.findById(req.params.id)
-      .populate("assignedTo", "name email role")
-      .populate("createdBy", "name email role");
+    const lead = await Lead.findById(req.params.id).populate("assignedTo", "name email role").populate("createdBy", "name email role");
 
     if (!lead) {
       return res.status(404).json({ message: "Lead not found" });
