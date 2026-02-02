@@ -91,7 +91,7 @@ This project helps manage leads, assign them to employees, and track follow-ups 
 
 ## 📸 Screenshot
 
-![mern-crm-screenshot](https://github.com/user-attachments/assets/cd928b37-b1ef-48b0-8dbc-f34773dfc5ba)
+![Screenshot (152)](https://github.com/user-attachments/assets/ae69cd12-d913-4c20-82eb-b339fee5a402)
 
 ---
 
