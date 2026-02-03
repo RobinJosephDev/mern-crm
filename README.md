@@ -43,19 +43,18 @@ This project helps manage leads, assign them to employees, and track follow-ups 
 ---
 
 ### 👨‍💼 Admin Features
-- Create and manage employees
+- Create, manage, and delete users (Admins & Employees)
 - Assign leads to employees
 - View and manage all leads
-- Full CRUD operations
-- Protected admin-only routes
-
+- Convert quotes into customers
+  
 ---
 
 ### 👷 Employee Features
-- View assigned leads
+- View and manage assigned leads
 - Edit leads
 - Add and manage follow-ups
-- Manage products and contact persons
+- Generate quotes
 
 ---
 
