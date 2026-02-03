@@ -91,7 +91,7 @@ This project helps manage leads, assign them to employees, and track follow-ups 
 
 ## 📸 Screenshot
 
-![Screenshot (152)](https://github.com/user-attachments/assets/880d7f19-e5b7-4a1e-9d84-5febaa863207)
+![Screenshot (153)](https://github.com/user-attachments/assets/def5e997-7cca-484b-b975-cc7b5d9b8470)
 
 ---
 
