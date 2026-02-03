@@ -27,6 +27,7 @@ app.post("/api/auth/register", (req, res) => {
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/leads", require("./routes/leadRoutes"));
 app.use("/api/follow-ups", require("./routes/followUpRoutes"));
+app.use("/api/customers", require("./routes/customerRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
