@@ -68,6 +68,9 @@ export interface Customer {
   creditLimit?: number;
   creditNotes?: string;
   currency?: string;
+  creditApplication?: boolean;
+  creditAgreement?: string;
+  shipperBrokerAgreement?: string;
 
   /* 🔹 ADDRESS */
   primaryAddress?: {

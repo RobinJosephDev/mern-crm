@@ -96,7 +96,7 @@ const CustomerPage = () => {
       {/* FORM MODAL */}
       {showForm && (
         <CustomerFormModal
-          key={selectedCustomer?._id || "new"} // 🔑 same fix as Leads
+          key={selectedCustomer?._id || "new"}
           customer={selectedCustomer}
           onClose={() => {
             setShowForm(false);

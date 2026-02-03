@@ -47,36 +47,6 @@ const accountsPayableSchema = new mongoose.Schema(
   { _id: false },
 );
 
-// Credit Details
-const creditSchema = new mongoose.Schema(
-  {
-    creditStatus: {
-      type: String,
-      enum: ["Approved", "Pending", "Rejected"],
-      default: "Pending",
-    },
-    modeOfPayment: {
-      type: String,
-      enum: ["Direct Deposit", "Cheque", "Wire", "Other"],
-    },
-    approvalDate: Date,
-    expiryDate: Date,
-    termsDays: Number,
-    limit: Number,
-    notes: String,
-    currency: {
-      type: String,
-      enum: ["Canadian", "USD"],
-      default: "Canadian",
-    },
-    creditApplicationFile: String, // file path
-    creditAgreementFile: String, // file path
-    shipperBrokerAgreement: Boolean,
-  },
-  { _id: false },
-);
-
-const customerRefNo = `CUST-${Date.now()}`;
 /* -------------------- CUSTOMER SCHEMA -------------------- */
 
 const customerSchema = new mongoose.Schema(
@@ -117,17 +87,42 @@ const customerSchema = new mongoose.Schema(
 
     accountsPayable: accountsPayableSchema,
 
-    /* -------- CUSTOM BROKER -------- */
-    customBroker: {
-      broker: String,
-    },
-
     /* -------- NOTES -------- */
     paymentNotes: String,
     specialNotes: String,
 
-    /* -------- CREDIT -------- */
-    credit: creditSchema,
+    /* -------- CREDIT (FLATTENED) -------- */
+    creditStatus: {
+      type: String,
+      enum: ["Approved", "Pending", "Rejected"],
+      default: "Pending",
+    },
+
+    paymentMode: {
+      type: String,
+      enum: ["Direct Deposit", "Cheque", "Wire", "Other"],
+    },
+
+    approvalDate: Date,
+    expiryDate: Date,
+    termsDays: Number,
+
+    creditLimit: Number,
+    creditNotes: String,
+
+    currency: {
+      type: String,
+      enum: ["CAD", "USD"],
+      default: "CAD",
+    },
+
+    creditApplication: {
+      type: Boolean,
+      default: false,
+    },
+
+    creditAgreement: String,
+    shipperBrokerAgreement: String,
 
     /* -------- MULTIPLE CONTACTS -------- */
     contacts: [contactSchema],

@@ -35,16 +35,40 @@ exports.getCustomerById = async (req, res) => {
 /* -------------------- UPDATE CUSTOMER -------------------- */
 exports.updateCustomer = async (req, res) => {
   try {
-    const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const data = { ...req.body };
+
+    // --- Parse JSON strings back to objects ---
+    if (data.primaryAddress && typeof data.primaryAddress === "string") {
+      data.primaryAddress = JSON.parse(data.primaryAddress);
+    }
+
+    if (data.contacts && typeof data.contacts === "string") {
+      data.contacts = JSON.parse(data.contacts);
+    }
+
+    // --- Handle uploaded files ---
+    if (req.files?.creditAgreement) {
+      data.creditAgreement = req.files.creditAgreement[0].path;
+    }
+
+    if (req.files?.shipperBrokerAgreement) {
+      data.shipperBrokerAgreement = req.files.shipperBrokerAgreement[0].path;
+    }
+
+    // --- Handle boolean ---
+    if (data.creditApplication !== undefined) {
+      data.creditApplication = data.creditApplication === "true" || data.creditApplication === true;
+    }
+
+    const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, data, { new: true })
       .populate("createdBy", "name email")
       .populate("convertedFromLead", "leadNumber customerName");
 
-    if (!updatedCustomer) {
-      return res.status(404).json({ message: "Customer not found" });
-    }
+    if (!updatedCustomer) return res.status(404).json({ message: "Customer not found" });
 
     res.json(updatedCustomer);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };

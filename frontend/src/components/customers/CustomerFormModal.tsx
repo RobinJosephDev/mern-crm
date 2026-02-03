@@ -31,7 +31,10 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
     expiryDate: "",
     creditLimit: "",
     creditNotes: "",
-    currency: "Canadian",
+    currency: "CAD",
+    creditApplication: false,
+    creditAgreement: null as File | null,
+    shipperBrokerAgreement: null as File | null,
 
     primaryName: "",
     primaryStreet: "",
@@ -40,6 +43,13 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
     primaryCountry: "",
     primaryPostalCode: "",
     primaryUnitNo: "",
+  });
+
+  /* -------------------- FILE STATE -------------------- */
+
+  const [existingFiles, setExistingFiles] = useState({
+    creditAgreement: "" as string,
+    shipperBrokerAgreement: "" as string,
   });
 
   /* -------------------- MULTIPLE CONTACTS -------------------- */
@@ -80,7 +90,10 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
       expiryDate: customer.expiryDate?.slice(0, 10) || "",
       creditLimit: customer.creditLimit?.toString() || "",
       creditNotes: customer.creditNotes || "",
-      currency: customer.currency || "Canadian",
+      currency: customer.currency || "CAD",
+      creditApplication: customer.creditApplication ?? false,
+      creditAgreement: null,
+      shipperBrokerAgreement: null,
 
       primaryName: customer.primaryAddress?.name || "",
       primaryStreet: customer.primaryAddress?.street || "",
@@ -90,7 +103,10 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
       primaryPostalCode: customer.primaryAddress?.postalCode || "",
       primaryUnitNo: customer.primaryAddress?.unitNo || "",
     });
-
+    setExistingFiles({
+      creditAgreement: customer.creditAgreement || "",
+      shipperBrokerAgreement: customer.shipperBrokerAgreement || "",
+    });
     setContacts(
       customer.contacts?.length
         ? customer.contacts.map((c) => ({
@@ -135,28 +151,77 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
     }));
   };
 
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setForm((prev) => ({ ...prev, [name]: checked }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    if (!files?.[0]) return;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: files[0],
+    }));
+  };
+
   /* -------------------- SUBMIT -------------------- */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const payload = {
-      ...form,
-      creditLimit: form.creditLimit ? Number(form.creditLimit) : undefined,
-      primaryAddress: {
-        name: form.primaryName,
-        street: form.primaryStreet,
-        city: form.primaryCity,
-        state: form.primaryState,
-        country: form.primaryCountry,
-        postalCode: form.primaryPostalCode,
-        unitNo: form.primaryUnitNo,
-      },
-      contacts: contacts.filter((c) => c.contactName || c.contactNo || c.email),
-    };
-
     try {
-      const res = isEdit && customer?._id ? await API.put(`/customers/${customer._id}`, payload) : await API.post("/customers", payload);
+      const formData = new FormData();
+
+      // --- Append text fields ---
+      formData.append("customerType", form.customerType);
+      formData.append("customerName", form.customerName);
+      formData.append("customerRefNo", form.customerRefNo || "");
+      formData.append("website", form.website || "");
+      formData.append("email", form.email || "");
+      formData.append("contactNo", form.contactNo || "");
+      formData.append("contactNoExt", form.contactNoExt || "");
+      formData.append("taxId", form.taxId || "");
+
+      formData.append("creditStatus", form.creditStatus || "");
+      formData.append("paymentMode", form.paymentMode || "");
+      formData.append("approvalDate", form.approvalDate || "");
+      formData.append("expiryDate", form.expiryDate || "");
+      formData.append("creditLimit", form.creditLimit || "");
+      formData.append("creditNotes", form.creditNotes || "");
+      formData.append("currency", form.currency || "CAD");
+      formData.append("creditApplication", form.creditApplication.toString());
+
+      // --- Append files ---
+      if (form.creditAgreement) formData.append("creditAgreement", form.creditAgreement);
+      if (form.shipperBrokerAgreement) formData.append("shipperBrokerAgreement", form.shipperBrokerAgreement);
+
+      // --- Append objects as JSON strings ---
+      formData.append(
+        "primaryAddress",
+        JSON.stringify({
+          name: form.primaryName,
+          street: form.primaryStreet,
+          city: form.primaryCity,
+          state: form.primaryState,
+          country: form.primaryCountry,
+          postalCode: form.primaryPostalCode,
+          unitNo: form.primaryUnitNo,
+        }),
+      );
+
+      formData.append("contacts", JSON.stringify(contacts));
+
+      // --- Send request ---
+      const res =
+        isEdit && customer?._id
+          ? await API.put(`/customers/${customer._id}`, formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            })
+          : await API.post("/customers", formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
 
       await onSuccess(res.data, !isEdit);
     } catch (err: any) {
@@ -227,6 +292,27 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
           <input type="date" name="approvalDate" value={form.approvalDate} onChange={handleChange} className="input" />
           <input type="date" name="expiryDate" value={form.expiryDate} onChange={handleChange} className="input" />
           <input name="creditLimit" placeholder="Credit Limit" value={form.creditLimit} onChange={handleChange} className="input" />
+          <label className="flex items-center gap-2 col-span-full">
+            <input type="checkbox" name="creditApplication" checked={form.creditApplication} onChange={handleCheckboxChange} />
+            Credit Application Submitted
+          </label>
+
+          {/* Credit Agreement */}
+          <div className="col-span-full">
+            <input type="file" name="creditAgreementFile" onChange={handleFileChange} className="input" />
+            {existingFiles.creditAgreement && !form.creditAgreement && (
+              <p className="text-sm text-gray-500 mt-1">Existing file: {existingFiles.creditAgreement.split("/").pop()}</p>
+            )}
+          </div>
+
+          {/* Shipper/Broker Agreement */}
+          <div className="col-span-full">
+            <input type="file" name="shipperBrokerAgreement" onChange={handleFileChange} className="input" />
+            {existingFiles.shipperBrokerAgreement && !form.shipperBrokerAgreement && (
+              <p className="text-sm text-gray-500 mt-1">Existing file: {existingFiles.shipperBrokerAgreement.split("/").pop()}</p>
+            )}
+          </div>
+
           <textarea name="creditNotes" placeholder="Credit Notes" value={form.creditNotes} onChange={handleChange} className="input col-span-full" />
 
           {/* CONTACTS */}
