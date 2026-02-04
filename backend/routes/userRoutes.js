@@ -29,4 +29,18 @@ router.get("/employees", protect, async (req, res) => {
   }
 });
 
+// GET carriers only
+router.get("/carriers", protect, async (req, res) => {
+  try {
+    const carriers = await User.find({
+      role: "carrier",
+      isActive: true,
+    }).select("_id name email");
+
+    res.json(carriers);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to load carriers" });
+  }
+});
+
 module.exports = router;

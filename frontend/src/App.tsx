@@ -9,6 +9,7 @@ import LeadsQuotesPage from "./pages/LeadsQuotesPage";
 import CustomerPage from "./pages/CustomerPage";
 import UsersPage from "./pages/UsersPage";
 import { ToastContainer } from "react-toastify";
+import ShipmentPage from "./pages/ShipmentPage";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route path="/follow-ups" element={<FollowUps />} />
             <Route path="/leads-with-quotes" element={<LeadsQuotesPage />} />
             <Route path="/customers" element={<CustomerPage />} />
+            <Route path="/shipments" element={<ShipmentPage />} />
             <Route path="/users" element={<UsersPage />} />
           </Routes>
         </div>

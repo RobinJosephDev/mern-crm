@@ -42,13 +42,13 @@ const Navbar = () => {
           Home
         </NavLink>
 
-        {token && (
+        {token && (role === "admin" || role === "employee") && (
           <NavLink to="/leads" className={({ isActive }) => `${menuItemClass} ${isActive ? activeClass : ""}`}>
             Leads
           </NavLink>
         )}
 
-        {token && role !== "admin" && (
+        {token && role === "employee" && (
           <NavLink to="/follow-ups" className={({ isActive }) => `${menuItemClass} ${isActive ? activeClass : ""}`}>
             Follow-ups
           </NavLink>
@@ -63,6 +63,12 @@ const Navbar = () => {
         {token && role === "admin" && (
           <NavLink to="/customers" className={({ isActive }) => `${menuItemClass} ${isActive ? activeClass : ""}`}>
             Customers
+          </NavLink>
+        )}
+
+        {token && (role === "carrier" || role === "customer") && (
+          <NavLink to="/shipments" className={({ isActive }) => `${menuItemClass} ${isActive ? activeClass : ""}`}>
+            Shipments
           </NavLink>
         )}
 

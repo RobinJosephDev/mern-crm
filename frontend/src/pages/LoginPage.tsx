@@ -14,7 +14,7 @@ const LoginPage = () => {
       const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-      navigate("/leads");
+      navigate("/");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
     }
@@ -25,11 +25,7 @@ const LoginPage = () => {
       <form onSubmit={submit} className="bg-white p-6 rounded shadow-md w-96">
         <h2 className="text-xl font-bold mb-4 text-center">Login</h2>
 
-        {error && (
-          <div className="bg-red-100 text-red-700 p-2 mb-3 rounded">
-            {error}
-          </div>
-        )}
+        {error && <div className="bg-red-100 text-red-700 p-2 mb-3 rounded">{error}</div>}
 
         <input
           className="w-full border p-2 mb-3 rounded"
@@ -49,9 +45,7 @@ const LoginPage = () => {
           required
         />
 
-        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Login
-        </button>
+        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Login</button>
       </form>
     </div>
   );

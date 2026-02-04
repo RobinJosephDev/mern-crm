@@ -29,6 +29,7 @@ app.use("/api/leads", require("./routes/leadRoutes"));
 app.use("/api/follow-ups", require("./routes/followUpRoutes"));
 app.use("/api/customers", require("./routes/customerRoutes"));
 app.use("/uploads", express.static("uploads"));
+app.use("/api/shipments", require("./routes/shipmentRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
