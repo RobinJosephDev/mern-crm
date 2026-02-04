@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { User } from "../../types/user";
+import { toast } from "react-toastify";
 
 interface Props {
   user: User | null;
@@ -57,10 +58,13 @@ const UserFormModal: React.FC<Props> = ({ user, onClose, onSuccess }) => {
 
     try {
       const res = isEdit && user?._id ? await API.put(`/users/${user._id}`, form) : await API.post("/register", form);
+      toast.success(isEdit ? "User updated successfully" : "User added successfully");
 
       await onSuccess(res.data, !isEdit);
     } catch (err: any) {
-      alert(err.response?.data?.message || "Something went wrong");
+      const message = err.response?.data?.message || err.response?.data?.error || "Something went wrong";
+
+      toast.error(message);
     } finally {
       setLoading(false);
     }

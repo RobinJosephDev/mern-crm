@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { Customer } from "../../types/customer";
 import { Autocomplete } from "@react-google-maps/api";
+import { toast } from "react-toastify";
 
 interface Props {
   customer: Customer | null;
@@ -222,10 +223,12 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
           : await API.post("/customers", formData, {
               headers: { "Content-Type": "multipart/form-data" },
             });
-
+      toast.success(isEdit ? "Customer updated successfully" : "Customer added successfully");
       await onSuccess(res.data, !isEdit);
     } catch (err: any) {
-      alert(err.response?.data?.message || "Something went wrong");
+      const message = err.response?.data?.message || err.response?.data?.error || "Something went wrong";
+
+      toast.error(message);
     } finally {
       setLoading(false);
     }

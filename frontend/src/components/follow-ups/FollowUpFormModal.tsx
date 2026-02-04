@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { FollowUp } from "../../types/followup";
 import { Autocomplete } from "@react-google-maps/api";
+import { toast } from "react-toastify";
 
 interface Props {
   followup: FollowUp | null;
@@ -241,10 +242,13 @@ const FollowUpFormModal: React.FC<Props> = ({ followup, onClose, onSuccess }) =>
 
     try {
       const res = isEdit && followup?._id ? await API.put(`/follow-ups/${followup._id}`, payload) : await API.post("/follow-ups", payload);
+      toast.success(isEdit ? "Follow-up updated successfully" : "Follow-up added successfully");
 
       await onSuccess(res.data, !isEdit);
     } catch (err: any) {
-      alert(err.response?.data?.message || "Something went wrong");
+      const message = err.response?.data?.message || err.response?.data?.error || "Something went wrong";
+
+      toast.error(message);
     } finally {
       setLoading(false);
     }

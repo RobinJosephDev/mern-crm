@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { Lead } from "../../types/lead";
 import { Autocomplete } from "@react-google-maps/api";
+import { toast } from "react-toastify";
 
 interface Props {
   lead: Lead | null;
@@ -181,10 +182,12 @@ const LeadFormModal: React.FC<Props> = ({ lead, onClose, onSuccess }) => {
 
     try {
       const res = isEdit && lead?._id ? await API.put(`/leads/${lead._id}`, payload) : await API.post("/leads", payload);
-
+      toast.success(isEdit ? "Lead updated successfully" : "Lead added successfully");
       await onSuccess(res.data, !isEdit);
     } catch (err: any) {
-      alert(err.response?.data?.message || "Something went wrong");
+      const message = err.response?.data?.message || err.response?.data?.error || "Something went wrong";
+
+      toast.error(message);
     } finally {
       setLoading(false);
     }
