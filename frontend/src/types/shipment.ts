@@ -1,9 +1,9 @@
 export type ShipmentType = "FTL" | "LTL";
 export type TeamType = "Team" | "Single";
-export type YesNo = "Yes" | "No";
 
 export interface ShipmentLocation {
   addressLine?: string;
+  street?: string;
   city?: string;
   state?: string;
   country?: string;
@@ -21,12 +21,11 @@ export interface Shipment {
   pickupLocation: ShipmentLocation;
   deliveryLocation: ShipmentLocation;
 
-  driverType: string;
-
+  driverType: TeamType;
   shipmentType: ShipmentType;
 
   weight?: number;
-  tarp?: YesNo;
+  tarpRequired?: boolean;
   equipment?: string;
 
   price?: number;

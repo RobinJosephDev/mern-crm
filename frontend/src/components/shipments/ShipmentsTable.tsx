@@ -55,6 +55,9 @@ const ShipmentsTable = ({ shipments, onEdit, onDelete }: Props) => {
           aValue = a.pickupLocation?.state || "";
           bValue = b.pickupLocation?.state || "";
         }
+        if (sortKey === "tarpRequired") {
+          return sortOrder === "asc" ? Number(a.tarpRequired) - Number(b.tarpRequired) : Number(b.tarpRequired) - Number(a.tarpRequired);
+        }
 
         aValue = aValue ?? "";
         bValue = bValue ?? "";
@@ -78,7 +81,7 @@ const ShipmentsTable = ({ shipments, onEdit, onDelete }: Props) => {
     { label: "Driver", key: "driverType" },
     { label: "Weight", key: "weight" },
     { label: "Shipment", key: "shipmentType" },
-    { label: "TARP", key: "tarp" },
+    { label: "TARP", key: "tarpRequired" },
     { label: "Equipment", key: "equipment" },
     { label: "Price", key: "price" },
     { label: "Actions", key: "actions" },
@@ -144,7 +147,7 @@ const ShipmentsTable = ({ shipments, onEdit, onDelete }: Props) => {
                   <td className="border px-3 py-2">{shipment.driverType}</td>
                   <td className="border px-3 py-2">{shipment.weight}</td>
                   <td className="border px-3 py-2">{shipment.shipmentType}</td>
-                  <td className="border px-3 py-2">{shipment.tarp}</td>
+                  <td className="border px-3 py-2">{shipment.tarpRequired ? "Yes" : "No"}</td>
                   <td className="border px-3 py-2">{shipment.equipment}</td>
                   <td className="border px-3 py-2">{shipment.price}</td>
 
