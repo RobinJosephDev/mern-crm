@@ -4,7 +4,6 @@ const Shipment = require("../models/Shipment");
 exports.getShipments = async (req, res) => {
   try {
     const shipments = await Shipment.find()
-      .populate("driver", "name email")
       .populate("customer", "customerName customerRefNo")
       .populate("createdBy", "name email")
       .sort({ createdAt: -1 });
@@ -18,10 +17,7 @@ exports.getShipments = async (req, res) => {
 /* -------------------- GET SHIPMENT BY ID -------------------- */
 exports.getShipmentById = async (req, res) => {
   try {
-    const shipment = await Shipment.findById(req.params.id)
-      .populate("driver", "name email")
-      .populate("customer", "customerName customerRefNo")
-      .populate("createdBy", "name email");
+    const shipment = await Shipment.findById(req.params.id).populate("customer", "customerName customerRefNo").populate("createdBy", "name email");
 
     if (!shipment) {
       return res.status(404).json({ message: "Shipment not found" });
@@ -47,6 +43,15 @@ exports.createShipment = async (req, res) => {
       data.deliveryLocation = JSON.parse(data.deliveryLocation);
     }
 
+    // --- Convert numbers ---
+    if (data.weight !== undefined) {
+      data.weight = Number(data.weight);
+    }
+
+    if (data.price !== undefined) {
+      data.price = Number(data.price);
+    }
+
     // --- Convert booleans ---
     if (data.tarpRequired !== undefined) {
       data.tarpRequired = data.tarpRequired === "true" || data.tarpRequired === true;
@@ -58,7 +63,6 @@ exports.createShipment = async (req, res) => {
     const shipment = await Shipment.create(data);
 
     const populatedShipment = await Shipment.findById(shipment._id)
-      .populate("driver", "name email")
       .populate("customer", "customerName customerRefNo")
       .populate("createdBy", "name email");
 
@@ -83,13 +87,21 @@ exports.updateShipment = async (req, res) => {
       data.deliveryLocation = JSON.parse(data.deliveryLocation);
     }
 
+    // --- Convert numbers ---
+    if (data.weight !== undefined) {
+      data.weight = Number(data.weight);
+    }
+
+    if (data.price !== undefined) {
+      data.price = Number(data.price);
+    }
+
     // --- Convert booleans ---
     if (data.tarpRequired !== undefined) {
       data.tarpRequired = data.tarpRequired === "true" || data.tarpRequired === true;
     }
 
-    const updatedShipment = await Shipment.findByIdAndUpdate(req.params.id, data, { new: true })
-      .populate("driver", "name email")
+    const updatedShipment = await Shipment.findByIdAndUpdate(req.params.id, data, { new: true, runValidators: true })
       .populate("customer", "customerName customerRefNo")
       .populate("createdBy", "name email");
 

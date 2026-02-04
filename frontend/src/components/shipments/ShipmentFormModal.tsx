@@ -16,10 +16,10 @@ const ShipmentFormModal: React.FC<Props> = ({ shipment, onClose, onSuccess }) =>
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user.role === "admin";
+  const isCarrier = user.role === "carrier";
 
   const [loading, setLoading] = useState(false);
-  const [employees, setEmployees] = useState<any[]>([]);
+  const [carriers, setCarriers] = useState<any[]>([]);
 
   /* -------------------- FORM STATE -------------------- */
   const [form, setForm] = useState({
@@ -42,11 +42,11 @@ const ShipmentFormModal: React.FC<Props> = ({ shipment, onClose, onSuccess }) =>
 
   /* -------------------- EFFECTS -------------------- */
   useEffect(() => {
-    if (!isAdmin) return;
-    API.get("/users/carriers")
-      .then((res) => setEmployees(res.data))
-      .catch(() => console.error("Failed to load carriers"));
-  }, [isAdmin]);
+    if (!isCarrier) return;
+    API.get("/users/shipments")
+      .then((res) => setCarriers(res.data))
+      .catch(() => console.error("Failed to load shipments"));
+  }, [isCarrier]);
 
   useEffect(() => {
     if (!shipment) return;
@@ -103,7 +103,10 @@ const ShipmentFormModal: React.FC<Props> = ({ shipment, onClose, onSuccess }) =>
 
     const payload = {
       ...form,
-      address: {
+      weight: form.weight ? Number(form.weight) : undefined,
+      price: form.price ? Number(form.price) : undefined,
+
+      pickupLocation: {
         addressLine: form.addressLine,
         city: form.city,
         state: form.state,
@@ -130,7 +133,7 @@ const ShipmentFormModal: React.FC<Props> = ({ shipment, onClose, onSuccess }) =>
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
       <div className="bg-white w-full max-w-5xl rounded-lg p-6 overflow-y-auto max-h-[90vh]">
-        <h2 className="text-xl font-semibold mb-4">{isEdit ? "Edit Lead" : "Add Lead"}</h2>
+        <h2 className="text-xl font-semibold mb-4">{isEdit ? "Edit Shipment" : "Add Shipment"}</h2>
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* BASIC INFO */}
@@ -176,8 +179,8 @@ const ShipmentFormModal: React.FC<Props> = ({ shipment, onClose, onSuccess }) =>
 
           <select name="shipmentType" value={form.shipmentType} onChange={handleChange} className="input">
             <option value="">Shipment Type</option>
-            <option value="Team">FTL</option>
-            <option value="Single">LTL</option>
+            <option value="FTL">FTL</option>
+            <option value="LTL">LTL</option>
           </select>
 
           <input name="weight" placeholder="Weight" value={form.weight} onChange={handleChange} className="input" />

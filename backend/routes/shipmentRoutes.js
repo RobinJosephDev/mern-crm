@@ -10,18 +10,18 @@ const { createShipment, getShipments, getShipmentById, updateShipment, deleteShi
 router.use(protect);
 
 /* -------------------- CREATE SHIPMENT -------------------- */
-router.post("/", authorize("admin", "employee"), createShipment);
+router.post("/", authorize("carrier"), createShipment);
 
 /* -------------------- GET ALL SHIPMENTS -------------------- */
-router.get("/", authorize("admin", "employee"), getShipments);
+router.get("/", authorize("carrier", "customer"), getShipments);
 
 /* -------------------- GET SHIPMENT BY ID -------------------- */
-router.get("/:id", authorize("admin", "employee"), validateObjectId, getShipmentById);
+router.get("/:id", authorize("carrier", "customer"), validateObjectId, getShipmentById);
 
 /* -------------------- UPDATE SHIPMENT -------------------- */
-router.put("/:id", authorize("admin", "employee"), validateObjectId, updateShipment);
+router.put("/:id", authorize("carrier"), validateObjectId, updateShipment);
 
 /* -------------------- DELETE SHIPMENT -------------------- */
-router.delete("/:id", authorize("admin"), validateObjectId, deleteShipment);
+router.delete("/:id", authorize("carrier"), validateObjectId, deleteShipment);
 
 module.exports = router;

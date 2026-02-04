@@ -78,17 +78,15 @@ const ShipmentPage = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Shipments</h2>
 
-        {isAdmin && (
-          <button
-            onClick={() => {
-              setSelectedShipment(null);
-              setShowForm(true);
-            }}
-            className="bg-blue-600 text-white text-xs px-4 py-2 rounded hover:bg-blue-700"
-          >
-            + Add Shipment
-          </button>
-        )}
+        <button
+          onClick={() => {
+            setSelectedShipment(null);
+            setShowForm(true);
+          }}
+          className="bg-blue-600 text-white text-xs px-4 py-2 rounded hover:bg-blue-700"
+        >
+          + Add Shipment
+        </button>
       </div>
 
       <ShipmentsTable
