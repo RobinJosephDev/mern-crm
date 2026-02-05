@@ -10,6 +10,7 @@ import UsersPage from "./pages/UsersPage";
 import { ToastContainer } from "react-toastify";
 import ShipmentPage from "./pages/ShipmentPage";
 import ShipmentQuotePage from "./pages/ShipmentQuotePage";
+import DashboardPage from "./pages/DashboardPage";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
         <Navbar />
         <div style={{ padding: "1rem" }}>
           <Routes>
-            <Route path="/" element={<div>Welcome to CRM</div>} />
+            <Route path="/" element={<DashboardPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/leads" element={<Leads />} />
