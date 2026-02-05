@@ -17,6 +17,8 @@ const ShipmentsTable = ({ shipments, onEdit, onDelete }: Props) => {
   const [shipmentTypeFilter, setShipmentTypeFilter] = useState("");
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const isCarrier = user.role === "carrier";
 
   /* -------------------- SORT -------------------- */
   const handleSort = (key: SortKey) => {
@@ -76,15 +78,15 @@ const ShipmentsTable = ({ shipments, onEdit, onDelete }: Props) => {
   const headers = [
     { label: "Shipment#", key: "shipmentNumber" },
     { label: "Load Date", key: "loadDate" },
-    { label: "Pickup", key: "pickupLocation" },
-    { label: "Delivery", key: "deliveryLocation" },
+    { label: "Pickup", key: "city" },
+    { label: "Delivery", key: "deliveryCity" },
     { label: "Driver", key: "driverType" },
     { label: "Weight", key: "weight" },
     { label: "Shipment", key: "shipmentType" },
     { label: "TARP", key: "tarpRequired" },
     { label: "Equipment", key: "equipment" },
     { label: "Price", key: "price" },
-    { label: "Actions", key: "actions" },
+    ...(isCarrier ? [{ label: "Actions", key: "actions" }] : []),
   ];
 
   return (
@@ -150,15 +152,16 @@ const ShipmentsTable = ({ shipments, onEdit, onDelete }: Props) => {
                   <td className="border px-3 py-2">{shipment.tarpRequired ? "Yes" : "No"}</td>
                   <td className="border px-3 py-2">{shipment.equipment}</td>
                   <td className="border px-3 py-2">{shipment.price}</td>
-
-                  <td className="border px-3 py-2 flex gap-2">
-                    <button onClick={() => onEdit(shipment)} className="text-blue-600 hover:text-blue-800 p-1">
-                      <PencilIcon className="w-4 h-4" />
-                    </button>
-                    <button onClick={() => onDelete(shipment)} className="text-red-600 hover:text-red-800 p-1">
-                      <TrashIcon className="w-4 h-4" />
-                    </button>
-                  </td>
+                  {isCarrier && (
+                    <td className="border px-3 py-2 flex gap-2">
+                      <button onClick={() => onEdit(shipment)} className="text-blue-600 hover:text-blue-800 p-1">
+                        <PencilIcon className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => onDelete(shipment)} className="text-red-600 hover:text-red-800 p-1">
+                        <TrashIcon className="w-4 h-4" />
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))
             ) : (

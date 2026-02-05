@@ -16,7 +16,7 @@ const ShipmentPage = () => {
   const pageSize = 10;
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user.role === "admin";
+  const isCarrier = user.role === "carrier";
 
   /* -------------------- FETCH -------------------- */
 
@@ -77,16 +77,17 @@ const ShipmentPage = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Shipments</h2>
-
-        <button
-          onClick={() => {
-            setSelectedShipment(null);
-            setShowForm(true);
-          }}
-          className="bg-blue-600 text-white text-xs px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Add Shipment
-        </button>
+        {isCarrier && (
+          <button
+            onClick={() => {
+              setSelectedShipment(null);
+              setShowForm(true);
+            }}
+            className="bg-blue-600 text-white text-xs px-4 py-2 rounded hover:bg-blue-700"
+          >
+            + Add Shipment
+          </button>
+        )}
       </div>
 
       <ShipmentsTable
