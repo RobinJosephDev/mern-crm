@@ -16,7 +16,7 @@ const FollowUpPage = () => {
   const pageSize = 10;
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user.role === "admin";
+  const isEmployee = user.role === "employee";
 
   /* -------------------- FETCH -------------------- */
 
@@ -35,7 +35,7 @@ const FollowUpPage = () => {
 
   /* -------------------- ADD / EDIT -------------------- */
 
-  const handleLeadSuccess = async (_followup: FollowUp, _isNew: boolean) => {
+  const handleFollowupSuccess = async (_followup: FollowUp, _isNew: boolean) => {
     // 1️⃣ Close modal immediately
     setShowForm(false);
     setSelectedFollowUp(null);
@@ -43,7 +43,7 @@ const FollowUpPage = () => {
     // 2️⃣ Reset pagination (optional but recommended)
     setPage(1);
 
-    // 3️⃣ Re-fetch leads from server (authoritative source)
+    // 3️⃣ Re-fetch follow-ups from server (authoritative source)
     try {
       const res = await API.get("/follow-ups");
       setFollowUps(res.data);
@@ -78,7 +78,7 @@ const FollowUpPage = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Follow-ups</h2>
 
-        {isAdmin && (
+        {isEmployee && (
           <button
             onClick={() => {
               setSelectedFollowUp(null);
@@ -114,15 +114,15 @@ const FollowUpPage = () => {
             setShowForm(false);
             setSelectedFollowUp(null);
           }}
-          onSuccess={handleLeadSuccess}
+          onSuccess={handleFollowupSuccess}
         />
       )}
 
       {/* DELETE MODAL */}
       {showDelete && selectedFollowUp && (
         <ConfirmDeleteModal
-          title="Delete Lead"
-          message={`Delete lead ${selectedFollowUp.leadNumber}?`}
+          title="Delete follow-up"
+          message={`Delete follow-up ${selectedFollowUp.leadNumber}?`}
           onCancel={() => {
             setShowDelete(false);
             setSelectedFollowUp(null);

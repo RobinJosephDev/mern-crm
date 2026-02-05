@@ -28,18 +28,12 @@ exports.createFollowUp = async (req, res) => {
   }
 };
 
-// GET ALL FollowUp
 // GET ALL FollowUp (role-based)
 exports.getFollowUp = async (req, res) => {
   try {
     let filter = {};
 
-    // If logged-in user is EMPLOYEE → only their assigned leads
-    if (req.user.role === "employee") {
-      filter.assignedTo = req.user.id;
-    }
-
-    const leads = await FollowUp.find(filter).populate("assignedTo", "name email").populate("createdBy", "name email").sort({ createdAt: -1 });
+    const leads = await FollowUp.find(filter).populate("createdBy", "name email").sort({ createdAt: -1 });
 
     res.json(leads);
   } catch (error) {
@@ -50,7 +44,7 @@ exports.getFollowUp = async (req, res) => {
 // GET SINGLE FollowUp BY ID
 exports.getFollowUpById = async (req, res) => {
   try {
-    const lead = await FollowUp.findById(req.params.id).populate("assignedTo", "name email role").populate("createdBy", "name email role");
+    const lead = await FollowUp.findById(req.params.id).populate("createdBy", "name email role");
 
     if (!lead) {
       return res.status(404).json({ message: "FollowUp not found" });
@@ -68,9 +62,7 @@ exports.updateFollowUp = async (req, res) => {
   try {
     const updatedFollowUp = await FollowUp.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    })
-      .populate("assignedTo", "name email")
-      .populate("createdBy", "name email");
+    }).populate("createdBy", "name email");
 
     if (!updatedFollowUp) {
       return res.status(404).json({ message: "FollowUp not found" });

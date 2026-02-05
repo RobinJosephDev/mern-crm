@@ -17,10 +17,6 @@ const FollowUpTable = ({ followups, onEdit, onDelete }: Props) => {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
-  // 🔐 Role check
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user.role === "admin";
-
   /* -------------------- SORT -------------------- */
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -35,7 +31,6 @@ const FollowUpTable = ({ followups, onEdit, onDelete }: Props) => {
   const filteredFollowUps = useMemo(() => {
     let data = followups.filter((followup) => {
       const searchMatch =
-        followup.customerName?.toLowerCase().includes(search.toLowerCase()) ||
         followup.email?.toLowerCase().includes(search.toLowerCase()) ||
         followup.phone?.toLowerCase().includes(search.toLowerCase()) ||
         followup.leadNumber?.toString().includes(search);
