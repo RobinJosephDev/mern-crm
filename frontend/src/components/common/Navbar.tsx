@@ -72,6 +72,12 @@ const Navbar = () => {
           </NavLink>
         )}
 
+        {token && (role === "carrier" || role === "admin") && (
+          <NavLink to="/shipments-with-quotes" className={({ isActive }) => `${menuItemClass} ${isActive ? activeClass : ""}`}>
+            Shipments with Quotes
+          </NavLink>
+        )}
+
         {token && role === "admin" && (
           <NavLink to="/users" className={({ isActive }) => `${menuItemClass} ${isActive ? activeClass : ""}`}>
             Users

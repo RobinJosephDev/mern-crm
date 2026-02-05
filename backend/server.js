@@ -30,6 +30,7 @@ app.use("/api/follow-ups", require("./routes/followUpRoutes"));
 app.use("/api/customers", require("./routes/customerRoutes"));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/shipments", require("./routes/shipmentRoutes"));
+app.use("/api/shipments-with-quotes", require("./routes/shipmentQuotesRoutes"));
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
