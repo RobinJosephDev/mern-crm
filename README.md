@@ -33,57 +33,79 @@ This project helps manage leads, assign them to employees, and track follow-ups 
 
 ## ✨ Features
 
-### 🔐 Authentication & Authorization
+## 🔐 Authentication & Authorization
 - User registration, login, and logout
 - JWT-based token authorization
-- Role-based access control:
+- Role-Based Access Control (RBAC) with the following roles:
   - **Admin**
   - **Employee**
+  - **Carrier**
+  - **Customer**
 
 ---
 
-### 👨‍💼 Admin Features
-- Create, manage, and delete users (Admins & Employees)
-- Assign leads to employees
+## 👨‍💼 Admin Features
+- Create, manage, and delete users:
+  - Admins
+  - Employees
+  - Carriers
+  - Customers
 - View and manage all leads
+- Assign leads to employees
 - Convert quotes into customers
-  
+- View:
+  - Leads with generated quotes
+  - Shipments with associated quotes
+- Full visibility across CRM, quoting, and shipment workflows
+
 ---
 
-### 👷 Employee Features
+## 👷 Employee Features
 - View and manage assigned leads
-- Edit leads
+- Edit leads and contact details
 - Add and manage follow-ups
-- Generate quotes
+- Generate quotes for leads
+- Update lead status and activity history
 
 ---
 
-### 📊 Lead & Follow-Up Management
-- Full CRUD operations
-- Add, edit, view, and delete:
+## 🚚 Carrier Features
+- Create and manage shipments
+- View shipments assigned to them
+- Manage shipment details:
+  - Status updates
+  - Delivery information
+- View shipment-related quotes
+- Track shipment progress
+
+---
+
+## 👤 Customer Features
+- View assigned shipments
+- Track shipment status
+- View shipment-related quote details
+- Read-only access to ensure data integrity
+
+---
+
+## 📊 Lead, Quote & Shipment Management
+- Full CRUD operations for:
   - Leads
   - Follow-ups
   - Products
-  - Multiple contact persons
+  - Quotes
+  - Shipments
+- Multiple contact persons per lead
+- Quote-to-shipment workflow
 - Follow-up tracking system
 
 ---
 
-### 📋 Tables & UI
-- Searching, sorting, and filtering
-- Modal popups for:
-  - Add
-  - Edit
-  - Delete confirmation
-- Clean and user-friendly UI
-
----
-
-### ✅ Validation, Sanitization & Security
+## ✅ Validation, Sanitization & Security
 - Frontend form validation
 - **Frontend input sanitization**
 - Backend schema validation
-- Secure API endpoints
+- Secure role-protected API endpoints
 - Centralized error handling
 
 ---
