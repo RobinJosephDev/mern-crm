@@ -243,7 +243,7 @@ const CustomerFormModal: React.FC<Props> = ({ customer, onClose, onSuccess }) =>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* BASIC INFO */}
           <select name="customerType" value={form.customerType} onChange={handleChange} className="input">
-            <option value="">Customer Type *</option>
+            <option value="">Customer Type</option>
             <option value="Shipper">Shipper</option>
             <option value="Consignee">Consignee</option>
             <option value="Both">Both</option>

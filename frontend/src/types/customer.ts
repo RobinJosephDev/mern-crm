@@ -51,7 +51,7 @@ export interface CustomerCredit {
 /* -------------------- CUSTOMER -------------------- */
 export interface Customer {
   _id: string;
-  customerType: string;
+  customerType?: string;
   customerName: string;
   customerRefNo?: string;
   website?: string;
