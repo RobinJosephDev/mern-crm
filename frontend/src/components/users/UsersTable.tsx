@@ -18,10 +18,6 @@ const UsersTable = ({ users, onEdit, onDelete }: Props) => {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
-  // Role check
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user.role === "admin";
-
   /* -------------------- SORT -------------------- */
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {

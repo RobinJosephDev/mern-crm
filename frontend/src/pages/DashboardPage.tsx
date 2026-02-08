@@ -9,20 +9,20 @@ const DashboardPage = () => {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
+    const fetchDashboardData = async () => {
+      let url = "/dashboard/stats";
+
+      if (user.role === "admin") url = "/dashboard/admin";
+      if (user.role === "employee") url = "/dashboard/employee";
+      if (user.role === "carrier") url = "/dashboard/carrier";
+      if (user.role === "customer") url = "/dashboard/customer";
+
+      const res = await axios.get(url);
+      setData(res.data);
+    };
+
     fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
-    let url = "/dashboard/stats";
-
-    if (user.role === "admin") url = "/dashboard/admin";
-    if (user.role === "employee") url = "/dashboard/employee";
-    if (user.role === "carrier") url = "/dashboard/carrier";
-    if (user.role === "customer") url = "/dashboard/customer";
-
-    const res = await axios.get(url);
-    setData(res.data);
-  };
+  }, [user.role]);
 
   if (!data) return <p>Loading dashboard...</p>;
 

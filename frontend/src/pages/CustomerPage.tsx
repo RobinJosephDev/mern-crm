@@ -15,9 +15,6 @@ const CustomerPage = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user.role === "admin";
-
   /* -------------------- FETCH -------------------- */
 
   useEffect(() => {
