@@ -19,7 +19,6 @@ const FollowUpFormModal: React.FC<Props> = ({ followup, onClose, onSuccess }) =>
   const isAdmin = user.role === "admin";
 
   const [loading, setLoading] = useState(false);
-  const [employees, setEmployees] = useState<any[]>([]);
 
   /* -------------------- FORM STATE -------------------- */
   const [form, setForm] = useState({
@@ -75,7 +74,7 @@ const FollowUpFormModal: React.FC<Props> = ({ followup, onClose, onSuccess }) =>
   useEffect(() => {
     if (!isAdmin) return;
     API.get("/users/employees")
-      .then((res) => setEmployees(res.data))
+      .then(() => {})
       .catch(() => console.error("Failed to load employees"));
   }, [isAdmin]);
 

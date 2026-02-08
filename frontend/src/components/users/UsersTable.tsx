@@ -44,7 +44,7 @@ const UsersTable = ({ users, onEdit, onDelete }: Props) => {
     });
 
     return data;
-  }, [users, search, nameFilter, roleFilter, sortKey, sortOrder]);
+  }, [users, search, nameFilter, roleFilter]);
 
   const nameOptions = Array.from(new Set(users.map((l) => l.name)));
   const roleOptions = Array.from(new Set(users.map((l) => l.role)));
