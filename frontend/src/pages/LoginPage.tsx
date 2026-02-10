@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
     try {
       const res = await API.post("/auth/login", { email, password });
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      const storage = rememberMe ? localStorage : sessionStorage;
+
+      storage.setItem("token", res.data.token);
+      storage.setItem("user", JSON.stringify(res.data.user));
+
       navigate("/");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login failed");
@@ -37,13 +44,25 @@ const LoginPage = () => {
         />
 
         <input
-          className="w-full border p-2 mb-4 rounded"
+          className="w-full border p-2 mb-3 rounded"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
+        {/* Remember + Forgot */}
+        <div className="flex items-center justify-between mb-4 text-sm">
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+            Remember me
+          </label>
+
+          <Link to="/forgot-password" className="text-blue-600 hover:underline">
+            Forgot password?
+          </Link>
+        </div>
 
         <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Login</button>
       </form>

@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
 
 const protect = (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -16,7 +20,7 @@ const protect = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Token invalid" });
+    return res.status(401).json({ message: "Token invalid" });
   }
 };
 
