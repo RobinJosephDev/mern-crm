@@ -12,6 +12,7 @@ import ShipmentPage from "./pages/ShipmentPage";
 import ShipmentQuotePage from "./pages/ShipmentQuotePage";
 import DashboardPage from "./pages/DashboardPage";
 import "react-toastify/dist/ReactToastify.css";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/shipments" element={<ShipmentPage />} />
             <Route path="/shipments-with-quotes" element={<ShipmentQuotePage />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </div>
       </Router>
