@@ -188,12 +188,79 @@ Includes:
 
 # 📁 Project Structure
 
-mern-crm/ │ ├── backend/ │ ├── config/ │ ├── controllers/ │ ├── emails/
-│ │ └── templates/ │ ├── jobs/ │ ├── middleware/ │ ├── models/ │ ├──
-queues/ │ ├── routes/ │ ├── uploads/ │ ├── server.js │ └── package.json
-│ ├── frontend/ │ ├── src/ │ │ ├── api/ │ │ ├── components/ │ │ ├──
-pages/ │ │ ├── utils/ │ │ ├── types/ │ │ └── App.tsx │ ├──
-tailwind.config.js │ └── package.json │ └── README.md
+mern-crm/
+│
+├── backend/
+│   ├── config/
+│   │   ├── db.js
+│   │   └── redis.js
+│   │
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── leadController.js
+│   │   └── ...
+│   │
+│   ├── emails/
+│   │   ├── email.service.js
+│   │   ├── email.types.js
+│   │   └── templates/
+│   │       ├── welcome.template.js
+│   │       ├── resetPassword.template.js
+│   │       ├── followUpDue.template.js
+│   │       └── leadAssigned.template.js
+│   │
+│   ├── jobs/
+│   │   └── followUpReminder.job.js
+│   │
+│   ├── middleware/
+│   │   ├── authMiddleware.js
+│   │   └── roleMiddleware.js
+│   │
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Lead.js
+│   │   └── ...
+│   │
+│   ├── queues/
+│   │   ├── email.queue.js
+│   │   └── email.worker.js
+│   │
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── dashboardRoutes.js
+│   │   └── ...
+│   │
+│   ├── uploads/
+│   ├── server.js
+│   └── package.json
+│
+├── frontend/
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── axios.ts
+│   │   │
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   └── leads/
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── LoginPage.tsx
+│   │   │   ├── ForgotPassword.tsx
+│   │   │   ├── ResetPassword.tsx
+│   │   │   ├── DashboardPage.tsx
+│   │   │   └── ...
+│   │   │
+│   │   ├── utils/
+│   │   │   └── passwordStrength.ts
+│   │   │
+│   │   ├── types/
+│   │   └── App.tsx
+│   │
+│   ├── tailwind.config.js
+│   └── package.json
+│
+└── README.md
+
 
 ------------------------------------------------------------------------
 
