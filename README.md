@@ -186,23 +186,23 @@ Includes:
 
 ------------------------------------------------------------------------
 
-# 📁 Project Structure
+## 📂 Project Structure
 
 mern-crm/
 │
 ├── backend/
 │   ├── config/
-│   │   ├── db.js
-│   │   └── redis.js
+│   │   ├── db.js                 # MongoDB connection
+│   │   └── redis.js              # Redis connection config
 │   │
 │   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── leadController.js
+│   │   ├── authController.js     # Auth logic (login, register, reset password)
+│   │   ├── leadController.js     # Lead CRUD logic
 │   │   └── ...
 │   │
 │   ├── emails/
-│   │   ├── email.service.js
-│   │   ├── email.types.js
+│   │   ├── email.service.js      # Central email sending service
+│   │   ├── email.types.js        # Email type definitions
 │   │   └── templates/
 │   │       ├── welcome.template.js
 │   │       ├── resetPassword.template.js
@@ -210,11 +210,11 @@ mern-crm/
 │   │       └── leadAssigned.template.js
 │   │
 │   ├── jobs/
-│   │   └── followUpReminder.job.js
+│   │   └── followUpReminder.job.js   # Scheduled background jobs
 │   │
 │   ├── middleware/
-│   │   ├── authMiddleware.js
-│   │   └── roleMiddleware.js
+│   │   ├── authMiddleware.js     # JWT protection
+│   │   └── roleMiddleware.js     # Role-based access control
 │   │
 │   ├── models/
 │   │   ├── User.js
@@ -222,22 +222,22 @@ mern-crm/
 │   │   └── ...
 │   │
 │   ├── queues/
-│   │   ├── email.queue.js
-│   │   └── email.worker.js
+│   │   ├── email.queue.js        # Email queue config (Redis)
+│   │   └── email.worker.js       # Background email processor
 │   │
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── dashboardRoutes.js
 │   │   └── ...
 │   │
-│   ├── uploads/
-│   ├── server.js
+│   ├── uploads/                  # File uploads storage
+│   ├── server.js                 # Express app entry point
 │   └── package.json
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── api/
-│   │   │   └── axios.ts
+│   │   │   └── axios.ts          # Axios instance with JWT interceptor
 │   │   │
 │   │   ├── components/
 │   │   │   ├── common/
@@ -260,7 +260,6 @@ mern-crm/
 │   └── package.json
 │
 └── README.md
-
 
 ------------------------------------------------------------------------
 
