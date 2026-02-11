@@ -28,18 +28,9 @@ const RegisterPage = () => {
       <form onSubmit={submit} className="bg-white p-6 rounded shadow-md w-96">
         <h2 className="text-xl font-bold mb-4 text-center">Register</h2>
 
-        {msg && (
-          <div className="bg-blue-100 text-blue-700 p-2 mb-3 rounded">
-            {msg}
-          </div>
-        )}
+        {msg && <div className="bg-blue-100 text-blue-700 p-2 mb-3 rounded">{msg}</div>}
 
-        <input
-          className="w-full border p-2 mb-3 rounded"
-          placeholder="Name"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
-        />
+        <input className="w-full border p-2 mb-3 rounded" placeholder="Name" onChange={(e) => setForm({ ...form, name: e.target.value })} required />
 
         <input
           className="w-full border p-2 mb-3 rounded"
@@ -57,19 +48,14 @@ const RegisterPage = () => {
           required
         />
 
-        <select
-          className="w-full border p-2 mb-4 rounded"
-          onChange={(e) => setForm({ ...form, role: e.target.value })}
-        >
+        <select className="w-full border p-2 mb-4 rounded" onChange={(e) => setForm({ ...form, role: e.target.value })}>
           <option value="admin">Admin</option>
           <option value="employee">Employee</option>
           <option value="carrier">Carrier</option>
-          <option value="carrier">Customer</option>
+          <option value="customer">Customer</option>
         </select>
 
-        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Register
-        </button>
+        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Register</button>
       </form>
     </div>
   );
