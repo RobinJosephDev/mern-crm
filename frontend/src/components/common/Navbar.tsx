@@ -7,7 +7,9 @@ interface JwtPayload {
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+
+  //  CHECK BOTH STORAGES
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
   let role: string | null = null;
 
@@ -26,6 +28,7 @@ const Navbar = () => {
 
   const logout = () => {
     localStorage.clear();
+    sessionStorage.clear();
     navigate("/login");
   };
 
