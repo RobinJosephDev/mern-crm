@@ -1,28 +1,48 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 const COLORS = ["#2563eb", "#16a34a", "#f97316", "#dc2626"];
 
 const DashboardPage = () => {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const navigate = useNavigate();
+
+  const storedUser = localStorage.getItem("user") || sessionStorage.getItem("user");
+
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     const fetchDashboardData = async () => {
-      let url = "/dashboard/stats";
+      try {
+        let url = "/dashboard/stats";
 
-      if (user.role === "admin") url = "/dashboard/admin";
-      if (user.role === "employee") url = "/dashboard/employee";
-      if (user.role === "carrier") url = "/dashboard/carrier";
-      if (user.role === "customer") url = "/dashboard/customer";
+        if (user.role === "admin") url = "/dashboard/admin";
+        if (user.role === "employee") url = "/dashboard/employee";
+        if (user.role === "carrier") url = "/dashboard/carrier";
+        if (user.role === "customer") url = "/dashboard/customer";
 
-      const res = await axios.get(url);
-      setData(res.data);
+        const res = await axios.get(url);
+        setData(res.data);
+      } catch (error: any) {
+        if (error.response?.status === 401) {
+          // Token invalid or expired
+          localStorage.clear();
+          sessionStorage.clear();
+          navigate("/login");
+        }
+      }
     };
 
     fetchDashboardData();
-  }, [user.role]);
+  }, [user, navigate]);
 
   if (!data) return <p>Loading dashboard...</p>;
 
@@ -30,7 +50,6 @@ const DashboardPage = () => {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
-      {/* ADMIN / EMPLOYEE STATS */}
       {(user.role === "admin" || user.role === "employee") && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
@@ -40,7 +59,6 @@ const DashboardPage = () => {
             {data.totalCustomers !== undefined && <Stat title="Customers" value={data.totalCustomers} />}
           </div>
 
-          {/* Leads per Month */}
           {data.leadsPerMonth && (
             <ChartCard title="Leads per Month">
               <ResponsiveContainer width="100%" height={300}>
@@ -56,7 +74,6 @@ const DashboardPage = () => {
         </>
       )}
 
-      {/* CARRIER / ADMIN SHIPMENT CHART */}
       {(user.role === "admin" || user.role === "carrier") && data.shipmentStatus && (
         <ChartCard title="Shipment Status">
           <ResponsiveContainer width="100%" height={300}>
@@ -72,7 +89,6 @@ const DashboardPage = () => {
         </ChartCard>
       )}
 
-      {/* CUSTOMER VIEW */}
       {user.role === "customer" && (
         <div className="bg-white shadow rounded p-6">
           <h2 className="text-xl font-semibold mb-4">My Shipments</h2>

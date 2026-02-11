@@ -2,7 +2,12 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const connectDB = require("./config/db");
-require("./queues/email.worker.js");
+try {
+  require("./queues/email.worker.js");
+  console.log("Email worker started");
+} catch (err) {
+  console.error("Worker failed to start:", err.message);
+}
 
 const app = express();
 
