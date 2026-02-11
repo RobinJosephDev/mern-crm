@@ -1,279 +1,231 @@
 # MERN CRM Application
 
-A full-stack **CRM (Customer Relationship Management)** application built using the **MERN stack** with:
+A full-stack **CRM (Customer Relationship Management)** application
+built using the **MERN stack** with role-based access control, JWT
+authentication, email queue system, dashboard analytics, and complete
+CRUD functionality.
 
-- 🔐 JWT Authentication
-- 👥 Role-Based Access Control (RBAC)
-- 📧 Email functionality (Forgot Password & Notifications)
-- 🧠 Remember Me authentication
-- 🛡 Frontend & Backend validation & sanitization
-- 📦 Quote-to-Shipment workflow
-- 📊 Full CRUD operations
+This system helps manage leads, generate quotes, convert customers,
+manage shipments, and track follow-ups through a secure and responsive
+UI.
 
-This CRM helps manage leads, users, quotes, shipments, and follow-ups through a clean and responsive UI.
-
----
+------------------------------------------------------------------------
 
 # 🚀 Tech Stack
 
-## 🖥 Frontend
-- React (TypeScript)
-- Tailwind CSS
-- React Router DOM
-- Axios (with interceptors)
-- Material UI (MUI)
-- JWT Decode
-- Google Maps Places API
-- Form validation & sanitization
-- Responsive UI
+## Frontend
 
-## 🧠 Backend
-- Node.js
-- Express.js
-- MongoDB & Mongoose
-- JWT Authentication
-- bcrypt (password hashing)
-- Role-Based Access Control (RBAC)
-- Multer (file uploads)
-- Nodemailer / SendGrid (Email service)
-- Background Jobs & Queues
-- Centralized error handling
+-   React (TypeScript)
+-   Tailwind CSS
+-   React Router DOM
+-   Axios (with interceptors)
+-   Recharts (Dashboard charts)
+-   JWT-based authentication
+-   Password strength validation
+-   Frontend input sanitization
+-   Responsive UI
 
----
+## Backend
+
+-   Node.js
+-   Express.js
+-   MongoDB & Mongoose
+-   JWT Authentication
+-   bcrypt (password hashing)
+-   Role-Based Access Control (RBAC)
+-   Nodemailer (Email service)
+-   Email queue system (Redis-based)
+-   Background email worker
+-   Multer (file uploads)
+-   Centralized error handling
+
+------------------------------------------------------------------------
+
+# ✨ Core Features
 
 # 🔐 Authentication & Authorization
 
-- User Registration
-- Login / Logout
-- JWT-based authentication
-- Protected API routes
-- Role-based authorization
-- Remember Me functionality
+-   User login & logout
+-   JWT-based authentication
+-   Role-Based Access Control (RBAC)
+-   Remember Me functionality
+-   Protected API routes
+-   Automatic logout on token expiration
 
-## 👤 User Roles
+### Supported Roles
 
-- **Admin**
-- **Employee**
-- **Carrier**
-- **Customer**
+-   Admin
+-   Employee
+-   Carrier
+-   Customer
 
-Each role has strictly controlled access to routes and features.
+------------------------------------------------------------------------
 
----
+# 🔁 Remember Me Functionality
 
-# 🧠 Remember Me Functionality
+Users can choose between:
 
-The application supports two login persistence modes:
+-   localStorage → Persistent login (Remember Me checked)
+-   sessionStorage → Session-only login (cleared when browser closes)
 
-### ✅ If "Remember Me" is checked:
-- JWT is stored in `localStorage`
-- User remains logged in after closing the browser
+Axios automatically attaches token from either storage.
 
-### ✅ If "Remember Me" is NOT checked:
-- JWT is stored in `sessionStorage`
-- Token is cleared when browser is closed
+------------------------------------------------------------------------
 
-Axios automatically reads the token from:
-- `localStorage`
-- or `sessionStorage`
+# 🔑 Forgot & Reset Password System
 
-This ensures secure and flexible authentication handling.
+Secure password recovery flow:
 
----
+1.  User requests reset link
+2.  Token is generated and stored securely
+3.  Reset email is sent via Nodemailer
+4.  User sets new password
+5.  Password strength validation enforced
+6.  User is auto-logged in after successful reset
 
-# 📧 Email Functionality
+Includes:
 
-The application includes secure email workflows.
+-   Token expiration
+-   Secure hashed reset tokens
+-   Email queue processing
+-   Spam protection improvements
 
-## 🔑 Forgot Password Flow
+------------------------------------------------------------------------
 
-1. User submits email.
-2. Backend generates a secure reset token.
-3. Reset link is emailed to the user.
-4. Token has expiration time.
-5. User resets password securely.
+# 📧 Email System
 
-## 📬 Email Service
+The application includes a background email processing system.
 
-- Uses **Nodemailer** (development)
-- Supports **SendGrid** (production)
-- Email templates stored inside:
-  ```
-  backend/emails/
-  ```
-- Background email processing supported via:
-  ```
-  backend/jobs/
-  backend/queues/
-  ```
+### Features:
 
----
+-   Welcome emails
+-   Password reset emails
+-   Lead assignment emails
+-   Follow-up reminder emails
 
-# 👨‍💼 Admin Features
+### Architecture:
 
-- Create, manage, delete:
-  - Admins
-  - Employees
-  - Carriers
-  - Customers
-- View all leads
-- Assign leads to employees
-- Convert quotes into customers
-- View:
-  - Leads with quotes
-  - Shipments with quotes
-- Full CRM visibility
+-   Email templates (/emails/templates)
+-   Email service layer
+-   Email queue (Redis)
+-   Background worker processor
+-   Non-blocking API performance
 
----
+------------------------------------------------------------------------
 
-# 👷 Employee Features
+# 📊 Role-Based Dashboard
 
-- Manage assigned leads
-- Edit leads & contacts
-- Add follow-ups
-- Generate quotes
-- Update lead status
-- View activity history
+After login, users are redirected to a dynamic dashboard based on their
+role.
 
----
+The dashboard:
 
-# 🚚 Carrier Features
+-   Fetches role-specific protected endpoints
+-   Displays KPI statistic cards
+-   Displays charts using Recharts
+-   Automatically logs out on 401 Unauthorized
+-   Redirects to login if no valid token
 
-- Create shipments
-- Manage shipment status
-- View shipment quotes
-- Track shipment progress
+------------------------------------------------------------------------
 
----
+## 📈 Dashboard Features by Role
 
-# 👤 Customer Features
+### Admin
 
-- View assigned shipments
-- Track shipment status
-- View shipment quote details
-- Read-only access
+-   Total Leads
+-   Pending Quotes
+-   Active Shipments
+-   Total Customers
+-   Leads per Month (Bar Chart)
+-   Shipment Status (Pie Chart)
 
----
+### Employee
 
-# 📊 Lead, Quote & Shipment Management
+-   Assigned Leads
+-   Pending Quotes
+-   Leads per Month (Bar Chart)
+
+### Carrier
+
+-   Shipment Status Overview (Pie Chart)
+
+### Customer
+
+-   View assigned shipments
+-   Track shipment progress
+
+------------------------------------------------------------------------
+
+# 📦 Lead, Quote & Shipment Management
 
 Full CRUD operations for:
 
-- Leads
-- Follow-ups
-- Products
-- Quotes
-- Shipments
-- Users
+-   Leads
+-   Follow-ups
+-   Products
+-   Quotes
+-   Shipments
 
 Includes:
-- Multiple contact persons per lead
-- Quote-to-shipment workflow
-- Status tracking
-- Pagination support
 
----
+-   Multiple contact persons per lead
+-   Quote-to-shipment workflow
+-   Follow-up tracking system
 
-# 🛡 Security & Validation
+------------------------------------------------------------------------
 
-- Frontend form validation
-- Frontend input sanitization
-- Backend schema validation
-- JWT verification middleware
-- Role-based route protection
-- Secure password hashing (bcrypt)
-- Protected file uploads
-- Centralized error handling
+# 🔐 Security & Validation
 
----
+-   JWT Authentication
+-   Role-protected API routes
+-   Frontend form validation
+-   Password strength validation
+-   Backend schema validation
+-   Centralized error handling
+-   Sanitized user inputs
 
-# 📂 Updated Project Structure
+------------------------------------------------------------------------
 
-```
-mern-crm/
-│
-├── backend/
-│   ├── config/            # Database & environment configuration
-│   ├── controllers/       # Business logic
-│   ├── emails/            # Email templates & mail service
-│   ├── jobs/              # Background job handlers
-│   ├── queues/            # Queue management
-│   ├── middleware/        # Auth & role middleware
-│   ├── models/            # Mongoose schemas
-│   ├── routes/            # API routes
-│   ├── uploads/           # File uploads
-│   ├── server.js
-│   └── package.json
-│
-├── frontend/
-│   ├── build/
-│   ├── public/
-│   ├── src/
-│   │   ├── api/           # Axios configuration
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── types/
-│   │   └── App.tsx
-│   ├── tailwind.config.js
-│   └── package.json
-│
-├── .gitignore
-└── README.md
-```
+# 📁 Project Structure
 
----
+mern-crm/ │ ├── backend/ │ ├── config/ │ ├── controllers/ │ ├── emails/
+│ │ └── templates/ │ ├── jobs/ │ ├── middleware/ │ ├── models/ │ ├──
+queues/ │ ├── routes/ │ ├── uploads/ │ ├── server.js │ └── package.json
+│ ├── frontend/ │ ├── src/ │ │ ├── api/ │ │ ├── components/ │ │ ├──
+pages/ │ │ ├── utils/ │ │ ├── types/ │ │ └── App.tsx │ ├──
+tailwind.config.js │ └── package.json │ └── README.md
 
-# ⚙️ Environment Variables
+------------------------------------------------------------------------
 
-## Backend (.env)
+# 🌍 Deployment
 
-```
-MONGO_URI=your_mongodb_connection
-JWT_SECRET=your_jwt_secret
-EMAIL_USER=your_email
-EMAIL_PASS=your_email_password
-SENDGRID_API_KEY=your_sendgrid_key
-CLIENT_URL=http://localhost:3000
-```
+-   Frontend: Vercel
+-   Backend: Heroku
+-   MongoDB Atlas
+-   Environment-based API configuration
 
-## Frontend (.env)
+------------------------------------------------------------------------
 
-```
-REACT_APP_API_URL=http://localhost:5000/api
-```
+# 🏆 Highlights
 
----
+-   Full RBAC implementation
+-   Background email queue system
+-   Role-based dynamic dashboard
+-   Remember Me login persistence
+-   Secure password reset workflow
+-   Production-ready architecture
+-   Clean, modular folder structure
+-   Scalable design
 
-# 🏗 Deployment
+------------------------------------------------------------------------
 
-Frontend:
-- Vercel
+# 📌 Conclusion
 
-Backend:
-- Heroku / Render
+This MERN CRM system demonstrates:
 
-Database:
-- MongoDB Atlas
-
----
-
-# 📸 Screenshot
-
-![CRM Screenshot](https://github.com/user-attachments/assets/5ec8d269-a9d9-4b97-8182-9b8c4ab36462)
-
----
-
-# 🎯 Future Improvements
-
-- Refresh token implementation
-- Email queue optimization
-- Admin analytics dashboard
-- Activity logging
-- Audit trail system
-- WebSocket real-time notifications
-
----
-
-# 📄 License
-
-This project is built for educational and portfolio purposes.
+-   Full-stack architecture
+-   Secure authentication design
+-   Role-based system modeling
+-   Background job processing
+-   Real-world business workflow logic
+-   Scalable production-ready coding practices
