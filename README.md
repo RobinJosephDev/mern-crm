@@ -33,7 +33,6 @@ UI.
 -   JWT Authentication
 -   bcrypt (password hashing)
 -   Role-Based Access Control (RBAC)
--   Nodemailer (Email service)
 -   Email queue system (Redis-based)
 -   Background email worker
 -   Multer (file uploads)
@@ -78,7 +77,7 @@ Secure password recovery flow:
 
 1.  User requests reset link
 2.  Token is generated and stored securely
-3.  Reset email is sent via Nodemailer
+3.  Reset email is sent via SendGrid
 4.  User sets new password
 5.  Password strength validation enforced
 6.  User is auto-logged in after successful reset
