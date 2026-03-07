@@ -17,8 +17,11 @@ const LeadsQuotesPage = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const isAdmin = user?.role?.toLowerCase() === "admin";
+  const storedUser = localStorage.getItem("user") || sessionStorage.getItem("user");
+
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  const isAdmin = user?.role === "admin";
 
   /* -------------------- FETCH -------------------- */
 
