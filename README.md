@@ -175,6 +175,31 @@ Includes:
 
 ------------------------------------------------------------------------
 
+# Screenshots
+
+🔐 Authentication – Login Page
+![login](https://github.com/user-attachments/assets/9d9200a2-7690-4049-a871-d7237532ed23)
+<br><br>
+📊 Admin Dashboard
+![dashboard](https://github.com/user-attachments/assets/76cd506b-64c8-4436-9924-26c9645112b4)
+<br><br>
+📦 Leads Management
+![leads](https://github.com/user-attachments/assets/a3ad18ee-13a5-4d8a-a882-7f7b01dee40d)
+<br><br>
+🧾 Leads with Quotes
+![leads-with-quotes](https://github.com/user-attachments/assets/faefc15b-fdff-4398-8112-7cbcb7bf5057)
+<br><br>
+👥 Customer Management
+![customers](https://github.com/user-attachments/assets/b77f36ed-9bdf-4ab7-b045-bb4ea6ae9904)
+<br><br>
+🚚 Shipment Management
+![shipments-with-quotes](https://github.com/user-attachments/assets/3b56af06-5645-44e5-a810-297cd4a9867a)
+<br><br>
+🧑‍💼 User & Role Management
+![users](https://github.com/user-attachments/assets/f94e311b-5b5f-4cfe-85ae-dee2e932912c)
+
+------------------------------------------------------------------------
+
 # 🔐 Security & Validation
 
 -   JWT Authentication
